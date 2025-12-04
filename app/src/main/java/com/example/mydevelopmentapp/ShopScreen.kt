@@ -11,11 +11,20 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,10 +36,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation.serialization.RouteEncoder
 
-
-
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ShopScreen(navController: NavHostController) {
 
@@ -75,67 +83,94 @@ fun ShopScreen(navController: NavHostController) {
         else -> filteredProducts
     }
 
-
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Top
-    ) {
-        Spacer(modifier = Modifier.padding(20.dp))
-        Button(
-            onClick = { showExpensiveOnly.value = !showExpensiveOnly.value }
-        ) {
-            Text(
-                text = if (showExpensiveOnly.value){
-                    "Tüm Ürünleri Göster"
-                }else{
-                    "Sadece Pahalı Ürünleri Göster (> $11.00)"
+    Scaffold (
+        topBar = {TopAppBar(
+            title = {Text(text = "Shopping")},
+            actions = {
+                IconButton(
+                    onClick = {navController.navigate(Screen.CartScreen.route)}
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.ShoppingCart,
+                        contentDescription = "sepet")
                 }
+            })})
+    {
+        innerPadding ->
+
+        Column(
+            modifier = Modifier.fillMaxSize()
+                .padding(innerPadding),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Top
+        ) {
+
+            OutlinedTextField(               //arama çubuğu
+                value = searchText.value,
+                onValueChange = {newText ->
+                    searchText.value = newText
+                },
+                label = {Text("Search for products")}
             )
-        }
-
-        OutlinedTextField(                                 //arama çubuğu
-            value = searchText.value,
-            onValueChange = {newText ->
-                searchText.value = newText
-            },
-            label = {Text("Ürün Ara")}
-        )
 
 
-        Button(onClick = {navController.navigate("CartScreen")}) {
-            Text(text = "Sepeti Gör")
-        }
+            Row (
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.padding(horizontal = 16.dp)
+            ) {
+                FilterChip(
+                    selected = sortOption.value == "none" && !showExpensiveOnly.value,
+                    onClick = {
+                        sortOption.value = "none"
+                        showExpensiveOnly.value = false
+                    },
+                    label = {Text("All")}
+                )
 
-        Row (
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier.padding(8.dp)
-        ) {
-            Button(onClick = {sortOption.value = "none"}) {
-                Text("Sıralama Yok")
+                FilterChip(
+                    selected = sortOption.value == "price",
+                    onClick = {
+                        sortOption.value = "price"
+                        showExpensiveOnly.value = false
+                    },
+                    label = {Text("Price")}
+                )
+
+                FilterChip(
+                    selected = sortOption.value == "name",
+                    onClick = {
+                        sortOption.value = "name"
+                        showExpensiveOnly.value = false
+                    },
+                    label = {Text("Name")}
+                )
+
+                FilterChip(
+                    selected = showExpensiveOnly.value,
+                    onClick = {
+                        showExpensiveOnly.value = !showExpensiveOnly.value
+                        sortOption.value = "none"
+                    },
+                    label = {Text("Expensive")}
+                )
             }
-            Button(onClick = {sortOption.value = "price"}) {
-                Text("Fiyata Göre")
-            }
-            Button(onClick = {sortOption.value = "name"}) {
-                Text("İsme Göre")
-            }
-        }
 
 
-
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-            modifier = Modifier.fillMaxSize(),
-            horizontalArrangement = Arrangement.spacedBy(6.dp),
-            verticalArrangement = Arrangement.spacedBy(6.dp)
-        ) {
-            items(sortedProducts) { product ->
-                shopCard(product)
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                modifier = Modifier.fillMaxSize(),
+                horizontalArrangement = Arrangement.spacedBy(6.dp),
+                verticalArrangement = Arrangement.spacedBy(6.dp)
+            ) {
+                items(sortedProducts) { product ->
+                    shopCard(product)
+                }
             }
         }
     }
 }
+
+
 
 
 @Composable
@@ -155,9 +190,19 @@ fun shopCard(
             Text(text = product.price.toCurrencyString(),
                 fontSize = 18.sp,
                 color = Color.White)
-            Button(onClick = { CartManager.addItems(product)}) {
-                Text(text = "+",
-                    fontSize = 20.sp)
+
+
+            if (CartManager.shopCartItems.contains(product)){
+                Button(onClick = { CartManager.removeProduct(product)},
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.Red)) {
+                    Text(text = "-",
+                        fontSize = 20.sp)
+                }
+            }else{
+                Button(onClick = { CartManager.addItems(product)}) {
+                    Text(text = "+",
+                        fontSize = 20.sp)
+                }
             }
         }
     }

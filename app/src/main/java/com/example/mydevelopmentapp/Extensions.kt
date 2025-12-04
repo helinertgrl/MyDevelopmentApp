@@ -15,8 +15,6 @@ fun Double.toCurrencyString(currencyCode: String = "USD"): String{
     return format.format(this)
 }
 
-fun List<Product>.getProductNames(): List<String> = this.map { it.name }
-
 
 fun <T, R : Comparable<R>> List<T>.sortByField(selector: (T) -> R): List<T> {
     return this.sortedBy { item -> selector(item) }

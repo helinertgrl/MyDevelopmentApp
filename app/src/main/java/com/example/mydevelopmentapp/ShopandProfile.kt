@@ -31,7 +31,7 @@ fun ShopandProfile(navController: NavHostController){
                 .weight(1f)
                 .aspectRatio(1f)
                 .background(Color.Blue)
-                .clickable(onClick = {navController.navigate("ShopScreen")}),
+                .clickable(onClick = {navController.navigate(Screen.ShopScreen.route)}),
             contentAlignment = Alignment.Center) {
             Text(text = "SHOP",
                 fontSize = 25.sp,
@@ -42,7 +42,7 @@ fun ShopandProfile(navController: NavHostController){
                 .weight(1f)
                 .aspectRatio(1f)
                 .background(Color.Blue)
-                .clickable(onClick = {navController.navigate("ProfileScreen")}),
+                .clickable(onClick = {navController.navigate(Screen.ProfileScreen.route)}),
             contentAlignment = Alignment.Center) {
             Text(text = "PROFILE",
                 fontSize = 25.sp,

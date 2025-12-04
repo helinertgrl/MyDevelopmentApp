@@ -41,10 +41,8 @@ fun MainScreen(navController: NavHostController){
 
     Box(
         modifier = Modifier.fillMaxSize()
+            .background(Color.LightGray)
     ){
-        Image(painter = painterResource(R.drawable.bckgrndd),
-            contentDescription = "bckgrnd",
-            modifier = Modifier.fillMaxSize().alpha(0.4f))
 
         AnimatedVisibility(visible = loginMode.value) {
 
@@ -112,7 +110,7 @@ fun UsernamePassword(navController: NavHostController){
         )
         Spacer(modifier = Modifier.padding(15.dp))
 
-        Button(onClick = {navController.navigate("ShopandProfile")}) {
+        Button(onClick = {navController.navigate(Screen.ShopandProfile.route)}) {
             Text(text = "->",
                 fontSize = 40.sp)
         }
