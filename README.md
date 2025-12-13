@@ -1,184 +1,307 @@
-# ☕ My Development App - Coffee Shop
+# Coffee Shop App - Geliştirme Süreci
 
-Bu proje, Android geliştirme becerilerimi adım adım geliştirdiğim bir demo uygulamasıdır. Bir kahve dükkanı teması üzerinden modern Android geliştirme tekniklerini öğrenip uyguluyorum.
+## 📋 Proje Hakkında
 
-## 📱 Uygulama Ekranları
+Bu proje, Android geliştirme sürecimdeki öğrenimlerimi belgelemek ve kendimi geliştirmek amacıyla oluşturduğum bir kahve dükkanı uygulamasıdır. Uygulama başlangıçta yerel verilerle çalışırken, yeni versiyonda internet bağlantısı eklenerek Fake bir API entegrasyonu sağlanmıştır.
 
-- **Ana Ekran**: Login/Signup/Guest seçenekleri
-- **Mağaza & Profil**: Ana menü ekranı
-- **Mağaza**: Ürün listesi, filtreleme ve arama
-- **Profil**: Kullanıcı profili görüntüleme
-- **Sepet**: Sepet yönetimi
+---
 
-## 🚀 Özellikler
+## 🚀 Sürüm Geçmişi
 
-- **Kullanıcı Arayüzü**: Login/Signup/Guest geçişleri
-- **Mağaza Sistemi**: Ürün listeleme ve filtreleme
-- **Profil Yönetimi**: Kullanıcı profili görüntüleme
-- **Sepet Yönetimi**: Ürün ekleme ve toplam tutar hesaplama
-- **Gelişmiş Filtreleme**: Arama, fiyat filtreleme, sıralama
+### **v2.0 - Başlangıç Versiyonu**
+- Temel Compose UI yapısı
+- Yerel ürün listesi
+- Sepet yönetimi
+- Navigasyon sistemi
 
-## 🛠️ Teknolojiler ve Geliştirme Süreci
+### **v3.0 - Güncel Versiyon** (Yeni Özellikler)
+- **MockAPI.io** entegrasyonu
+- **Ktor** HTTP client implementasyonu
+- **Room Database** ile offline cache
+- **Coil/AsyncImage** ile network görsel yükleme
+- Repository pattern implementasyonu
 
-### Öğrenilen ve Uygulanan Kavramlar
+---
 
-| Dönem | Teknoloji/Konsept | Açıklama | Uygulandığı Yer |
-|-------|------------------|----------|-----------------|
-| **Dönem 1** | **Extension Functions** | Mevcut class'lara yeni fonksiyonlar ekleme | `Double.toCurrencyString()`, `List<Product>.getProductNames()` |
-| **Dönem 1** | **Generic Functions** | Tip bağımsız yeniden kullanılabilir fonksiyonlar | `List<T>.sortByField()` |
-| **Dönem 1** | **Higher-Order Functions** | Fonksiyonları parametre olarak alma | `filter`, `fold`, `map` operasyonları |
-| **Dönem 1** | **Singleton Pattern** | Tek instance yönetimi | `CartManager` object class'ı |
-| **Dönem 1** | **Companion Object** | Class seviyesinde fonksiyon ve değişkenler | `Product.isValidPrice()` |
-| **Dönem 1** | **Jetpack Compose** | Modern UI toolkit | Tüm ekranlar `@Composable` fonksiyonlar |
-| **Dönem 1** | **Navigation Component** | Ekran geçişleri | `NavController` ve `NavHost` |
+## 🛠️ Kullanılan Teknolojiler
+
+### **UI & Framework**
+| Teknoloji | Amaç |
+|-----------|------|
+| Jetpack Compose | Modern UI oluşturma |
+| Navigation Component | Sayfa geçişleri |
+| Material 3 | Tasarım sistemi |
+| Coil | Görsel yükleme |
+
+### **Network & Data**
+| Teknoloji | Amaç |
+|-----------|------|
+| Ktor | HTTP istemci |
+| Kotlin Serialization | JSON parsing |
+| MockAPI.io | Fake REST API |
+
+### **Database**
+| Teknoloji | Amaç |
+|-----------|------|
+| Room Database | Yerel veri depolama |
+| DAO Pattern | Veri erişim katmanı |
+
+### **Architecture**
+| Teknoloji | Amaç |
+|-----------|------|
+| Repository Pattern | Data katmanı soyutlama |
+| MVVM (kısmi) | Mimari yapı |
+
+---
 
 
-## 🔧 Kurulum
 
-1. **Repository'yi klonlayın**
-```bash
-git clone https://github.com/username/my-development-app.git
+## 🔄 Eklenen Yeni Özellikler (v3.0)
+
+### **1. Network Entegrasyonu**
+- ✅ MockAPI.io üzerinden fake REST API
+- ✅ Ktor HTTP client konfigürasyonu
+- ✅ JSON serialization/deserialization
+- ✅ Hata yönetimi ve loading state'leri
+
+### **2. Veri Yönetimi**
+- ✅ Room database implementasyonu
+- ✅ Entity, DAO, Database sınıfları
+- ✅ Repository pattern implementasyonu
+- ✅ Offline cache mekanizması
+
+### **3. UI Geliştirmeleri**
+- ✅ AsyncImage ile network görsel yükleme
+- ✅ Loading ve error state gösterimi
+- ✅ Ürün kartlarının responsive tasarımı
+- ✅ Görsel placeholder'ları
+
+### **4. Mimari İyileştirmeler**
+- ✅ Katmanlı mimari
+- ✅ Data class'ların ayrılması
+- ✅ Extension fonksiyonlar
+- ✅ Clean code prensipleri
+
+---
+
+## 📁 Paket Yapısı
+
+```
+com.example.mydevelopmentapp/
+├── data/
+│   ├── api/
+│   │   ├── CoffeeApiService.kt    # API servisi
+│   │   └── KtorClient.kt          # Ktor konfigürasyonu
+│   ├── local/
+│   │   ├── ProductEntity.kt       # Room entity
+│   │   ├── ProductDao.kt          # Database operations
+│   │   └── AppDatabase.kt         # Database instance
+│   ├── model/
+│   │   └── ProductResponse.kt     # API response model
+│   └── repository/
+│       └── ProductRepository.kt   # Data repository
+├── ui/
+│   ├── screens/
+│   │   ├── MainScreen.kt
+│   │   ├── ShopScreen.kt
+│   │   ├── ProfileScreen.kt
+│   │   ├── CartScreen.kt
+│   │   └── ShopandProfile.kt
+│   └── navigation/
+│       └── Navigation.kt
+├── utils/
+│   └── Extensions.kt              # Extension fonksiyonlar
+└── MainActivity.kt
 ```
 
-2. **Android Studio'da açın**
-   - Android Studio Arctic Fox veya üstü gereklidir
-   - JDK 11 veya üstü kurulu olmalıdır
+---
 
-3. **Build ve çalıştırma**
-   - Projeyi build edin
-   - Emulator veya fiziksel cihazda çalıştırın
+## 🎯 Projenin Amacı
 
+Bu projeyi geliştirirken temel hedeflerim:
 
+1. **Öğrenme Sürecini Belgelemek** - Her yeni teknolojiyi adım adım uygulamak
+2. **Gerçek Dünya Senaryoları** - Network, database, cache gibi gerçek ihtiyaçları çözmek
+3. **Kod Kalitesi** - Clean architecture ve best practices uygulamak
+4. **UI/UX Deneyimi** - Modern ve kullanıcı dostu arayüzler tasarlamak
+5. **Problem Çözme** - Karşılaşılan hataları araştırıp çözüm üretmek
 
-## 🎯 Kullanım
+---
 
-1. **Başlangıç**: Uygulama MainScreen ile başlar
-2. **Giriş**: Login, Sign Up veya Guest olarak devam edin
-3. **Ana Menü**: Shop ve Profile seçenekleri
-4. **Mağaza**: 
-   - Ürünleri filtreleyin (fiyat > $11.00)
-   - İsme veya fiyata göre sıralayın
-   - Arama yapın
-   - Sepete ürün ekleyin
-5. **Sepet**: Eklenen ürünleri ve toplam tutarı görüntüleyin
+## 📱 Ekranlar ve Özellikler
 
-## 🚀 Geliştirme Sürecim
+| Ekran | Özellikler |
+|-------|------------|
+| **MainScreen** | Giriş/Üye olma/Guest modu |
+| **ShopScreen** | Ürün listesi, filtreleme, sıralama, sepete ekleme |
+| **ProfileScreen** | Kullanıcı profili görüntüleme |
+| **CartScreen** | Sepet özeti, ürün çıkarma, toplam tutar |
 
-Bu proje, **Meta Android Developer Professional Certificate** programının "Kotlin'de İleri Seviye Programlama" dersinde öğrendiğim konseptleri uyguladığım bir gelişim günlüğüdür.
+---
 
-### Öğrenme Yol Haritası
+## 📝 Öğrenilen Kavramlar
 
-1. **Temel Kotlin & Compose**
-   - `@Composable` fonksiyonlar
-   - State management
-   - Basic layouting
+- Jetpack Compose ile modern UI tasarımı
+- Ktor ile network işlemleri
+- Room Database ile lokal veri depolama
+- Repository pattern ve clean architecture
+- State management ve lifecycle
+- Asenkron programlama (coroutines)
+- Error handling ve loading state'leri
+- API entegrasyonu ve JSON parsing
 
-2. **İleri Kotlin Konseptleri** ✅
-   - Extension functions
-   - Generic programming
-   - Higher-order functions ve lambda ifadeleri
-   - Singleton design pattern
-   - Companion objects
+---
 
-3. **Gelecek Eklenecekler** 
-   - Room Database
-   - Retrofit & API integration
-   - ViewModel & MVVM architecture
-   - Dependency Injection (Hilt)
-   
+# Coffee Shop App - Development Process
 
+## 📋 About the Project
 
+This project is a coffee shop application I created to document my Android development learning process and improve my skills. The app initially worked with local data, and in the new version, internet connectivity has been added with real API integration.
 
-# ☕ My Development App - Coffee Shop (English)
+---
 
-This project is a demo application where I progressively develop my Android development skills. I learn and apply modern Android development techniques through a coffee shop theme.
+## 🚀 Version History
 
-## 📱 Application Screens
+### **v2.0 - Initial Version**
+- Basic Compose UI structure
+- Local product list
+- Cart management
+- Navigation system
 
-- **Main Screen**: Login/Signup/Guest options
-- **Shop & Profile**: Main menu screen
-- **Shop**: Product list, filtering and search
-- **Profile**: User profile display
-- **Cart**: Shopping cart management
+### **v3.0 - Current Version** (New Features)
+- **MockAPI.io** integration
+- **Ktor** HTTP client implementation
+- **Room Database** for offline caching
+- **Coil/AsyncImage** for network image loading
+- Repository pattern implementation
 
-## 🚀 Features
+---
 
-- **User Interface**: Login/Signup/Guest transitions
-- **Shop System**: Product listing and filtering
-- **Profile Management**: User profile display
-- **Cart Management**: Product addition and total calculation
-- **Advanced Filtering**: Search, price filtering, sorting
+## 🛠️ Technologies Used
 
-## 🛠️ Technologies and Development Process
+### **UI & Framework**
+| Technology | Purpose |
+|------------|---------|
+| Jetpack Compose | Modern UI creation |
+| Navigation Component | Page transitions |
+| Material 3 | Design system |
+| Coil | Image loading |
 
-### Learned and Implemented Concepts
+### **Network & Data**
+| Technology | Purpose |
+|------------|---------|
+| Ktor | HTTP client |
+| Kotlin Serialization | JSON parsing |
+| MockAPI.io | Fake REST API |
 
-| Period | Technology/Concept | Description | Implementation Location |
-|--------|-------------------|-------------|-------------------------|
-| **Period 1** | **Extension Functions** | Adding new functions to existing classes | `Double.toCurrencyString()`, `List<Product>.getProductNames()` |
-| **Period 1** | **Generic Functions** | Type-independent reusable functions | `List<T>.sortByField()` |
-| **Period 1** | **Higher-Order Functions** | Taking functions as parameters | `filter`, `fold`, `map` operations |
-| **Period 1** | **Singleton Pattern** | Single instance management | `CartManager` object class |
-| **Period 1** | **Companion Object** | Class-level functions and variables | `Product.isValidPrice()` |
-| **Period 1** | **Jetpack Compose** | Modern UI toolkit | All screens as `@Composable` functions |
-| **Period 1** | **Navigation Component** | Screen transitions | `NavController` and `NavHost` |
+### **Database**
+| Technology | Purpose |
+|------------|---------|
+| Room Database | Local data storage |
+| DAO Pattern | Data access layer |
 
+### **Architecture**
+| Technology | Purpose |
+|------------|---------|
+| Repository Pattern | Data layer abstraction |
+| MVVM (partial) | Architecture structure |
 
-## 🔧 Installation
+---
 
-1. **Clone the repository**
-```bash
-git clone https://github.com/username/my-development-app.git
+## 🔄 Added New Features (v3.0)
+
+### **1. Network Integration**
+- ✅ Fake REST API via MockAPI.io
+- ✅ Ktor HTTP client configuration
+- ✅ JSON serialization/deserialization
+- ✅ Error handling and loading states
+
+### **2. Data Management**
+- ✅ Room database implementation
+- ✅ Entity, DAO, Database classes
+- ✅ Repository pattern implementation
+- ✅ Offline cache mechanism
+
+### **3. UI Improvements**
+- ✅ AsyncImage for network image loading
+- ✅ Loading and error state display
+- ✅ Responsive product card design
+- ✅ Image placeholders
+
+### **4. Architectural Improvements**
+- ✅ Layered architecture
+- ✅ Separation of data classes
+- ✅ Extension functions
+- ✅ Clean code principles
+
+---
+
+## 📁 Package Structure
+
+```
+com.example.mydevelopmentapp/
+├── data/
+│   ├── api/
+│   │   ├── CoffeeApiService.kt    # API service
+│   │   └── KtorClient.kt          # Ktor configuration
+│   ├── local/
+│   │   ├── ProductEntity.kt       # Room entity
+│   │   ├── ProductDao.kt          # Database operations
+│   │   └── AppDatabase.kt         # Database instance
+│   ├── model/
+│   │   └── ProductResponse.kt     # API response model
+│   └── repository/
+│       └── ProductRepository.kt   # Data repository
+├── ui/
+│   ├── screens/
+│   │   ├── MainScreen.kt
+│   │   ├── ShopScreen.kt
+│   │   ├── ProfileScreen.kt
+│   │   ├── CartScreen.kt
+│   │   └── ShopandProfile.kt
+│   └── navigation/
+│       └── Navigation.kt
+├── utils/
+│   └── Extensions.kt              # Extension functions
+└── MainActivity.kt
 ```
 
-2. **Open in Android Studio**
-   - Android Studio Arctic Fox or higher required
-   - JDK 11 or higher must be installed
+---
 
-3. **Build and run**
-   - Build the project
-   - Run on emulator or physical device
+## 🎯 Project Goals
 
+My main goals while developing this project:
 
+1. **Document Learning Process** - Implement each new technology step by step
+2. **Real-World Scenarios** - Solve real needs like network, database, cache
+3. **Code Quality** - Apply clean architecture and best practices
+4. **UI/UX Experience** - Design modern and user-friendly interfaces
+5. **Problem Solving** - Research and solve encountered errors
 
-## 🎯 Usage
+---
 
-1. **Start**: Application starts with MainScreen
-2. **Login**: Continue with Login, Sign Up or as Guest
-3. **Main Menu**: Shop and Profile options
-4. **Shop**:
-   - Filter products (price > $11.00)
-   - Sort by name or price
-   - Search products
-   - Add products to cart
-5. **Cart**: View added products and total amount
+## 📱 Screens and Features
 
-## 🚀 My Development Process
+| Screen | Features |
+|--------|----------|
+| **MainScreen** | Login/Sign Up/Guest mode |
+| **ShopScreen** | Product list, filtering, sorting, add to cart |
+| **ProfileScreen** | User profile display |
+| **CartScreen** | Cart summary, remove items, total price |
 
-This project is a development diary where I apply concepts learned in the **Meta Android Developer Professional Certificate** program's "Advanced Programming in Kotlin" course.
+---
 
-### Learning Roadmap
+## 📝 Learned Concepts
 
-1. **Basic Kotlin & Compose**
-   - `@Composable` functions
-   - State management
-   - Basic layouting
+- Modern UI design with Jetpack Compose
+- Network operations with Ktor
+- Local data storage with Room Database
+- Repository pattern and clean architecture
+- State management and lifecycle
+- Asynchronous programming (coroutines)
+- Error handling and loading states
+- API integration and JSON parsing
 
-2. **Advanced Kotlin Concepts** ✅
-   - Extension functions
-   - Generic programming
-   - Higher-order functions and lambda expressions
-   - Singleton design pattern
-   - Companion objects
+---
 
-3. **Future Additions** 
-   - Room Database
-   - Retrofit & API integration
-   - ViewModel & MVVM architecture
-   - Dependency Injection (Hilt)
-
-
-
-**Not**: Bu proje eğitim amaçlıdır ve sürekli geliştirilmektedir. Her yeni öğrendiğim teknoloji buraya eklenecektir!
-
-**Note**: This project is for educational purposes and is continuously developed. Every new technology I learn will be added here!
+**Developer Note:** This project represents my ongoing journey in Android development. Each commit and version update reflects new concepts learned and applied. The goal is not just to build an app, but to understand the underlying principles and best practices of modern Android development.
