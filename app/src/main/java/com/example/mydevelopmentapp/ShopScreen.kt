@@ -1,5 +1,6 @@
 package com.example.mydevelopmentapp
 
+import android.R.attr.text
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -7,6 +8,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -26,24 +29,35 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.serialization.RouteEncoder
+import com.example.mydevelopmentapp.data.api.CoffeeApiService
+import com.example.mydevelopmentapp.data.api.KtorClient
+import com.example.mydevelopmentapp.data.local.AppDatabase
+import com.example.mydevelopmentapp.data.repository.ProductRepository
+import coil.compose.AsyncImage
+import kotlin.math.min
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ShopScreen(navController: NavHostController) {
+    val context = LocalContext.current
 
-
-    val products = listOf(
+    /*val products = listOf(
         Product("Latte", 12.99, R.drawable.latt),
         Product("Espresso", 9.99, R.drawable.latt),
         Product("Americano", 11.49, R.drawable.latt),
@@ -58,10 +72,40 @@ fun ShopScreen(navController: NavHostController) {
         Product("White Chocolate Mocha", 5.49, R.drawable.latt)
     ).filter { Product.isValidPrice(it.price) }
 
+     */
+
+    // State'ler
+    var products by remember { mutableStateOf<List<Product>>(emptyList()) }
+    var isLoading by remember { mutableStateOf(false) }
+    var errorMessage by remember { mutableStateOf<String?>(null) }
+
+
+    val repository = remember {
+        ProductRepository(
+            CoffeeApiService(KtorClient.httpClient),
+            AppDatabase.getDatabase(context).productDao()
+        )
+    }
+
+
+    LaunchedEffect(Unit) {
+        isLoading = true
+        try {
+            products = repository.getProducts()
+            errorMessage = null
+        } catch (e: Exception) {
+            errorMessage = "Hata: ${e.message}"
+            products = emptyList()
+        } finally {
+            isLoading = false
+        }
+    }
+
+
+
     val searchText = remember { mutableStateOf("") }           //textfield içinde arama durumu
     val showExpensiveOnly = remember { mutableStateOf<Boolean>(false) }   //11den pahalı state durumu
     val sortOption = remember { mutableStateOf<String>("none") }    //Kullanıcının hangi sıralamayı seçtiğini tutuyor.
-
 
 
     val searchedProducts = products.filter { product ->
@@ -76,6 +120,7 @@ fun ShopScreen(navController: NavHostController) {
     } else {
         searchedProducts
     }
+
 
     val sortedProducts = when(sortOption.value) {
         "price" -> filteredProducts.sortByField { it.price }
@@ -104,6 +149,23 @@ fun ShopScreen(navController: NavHostController) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top
         ) {
+
+            if (errorMessage != null) {
+                Text(
+                    text = errorMessage ?: "",
+                    color = Color.Red,
+                    modifier = Modifier.padding(16.dp)
+                )
+            }
+
+            // Loading göster
+            if (isLoading) {
+                Text(
+                    text = "Yükleniyor...",
+                    modifier = Modifier.padding(16.dp)
+                )
+            }
+
 
             OutlinedTextField(               //arama çubuğu
                 value = searchText.value,
@@ -155,7 +217,6 @@ fun ShopScreen(navController: NavHostController) {
                 )
             }
 
-
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),
                 modifier = Modifier.fillMaxSize(),
@@ -182,14 +243,36 @@ fun shopCard(
         colors = CardDefaults.cardColors(containerColor = Color.DarkGray),
 
         ) {
-        Column (horizontalAlignment = Alignment.CenterHorizontally) {
-            Image(painterResource(product.imageResourceId), contentDescription = "coffee")
+        Column (
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally) {
+
+            AsyncImage(
+                model = product.imageResourceId,  // URL buraya
+                contentDescription = "coffee",
+                modifier = Modifier.fillMaxWidth()
+                    .height(150.dp),
+                placeholder = painterResource(R.drawable.latt),  // Yüklenirken gösterilecek
+                error = painterResource(R.drawable.latt),// Hata durumunda gösterilecek
+                contentScale = androidx.compose.ui.layout.ContentScale.Crop
+            )
+
             Text(text = product.name,
-                fontSize = 30.sp,
-                color = Color.White)
+                fontSize = 24.sp,
+                color = Color.White,
+                modifier = Modifier
+                    .padding(horizontal = 8.dp, vertical = 4.dp)
+                    .height(60.dp),
+                maxLines = 2,
+                minLines = 2,
+                lineHeight = 26.sp,
+                textAlign = TextAlign.Center
+            )
+
             Text(text = product.price.toCurrencyString(),
                 fontSize = 18.sp,
-                color = Color.White)
+                color = Color.White,
+                modifier = Modifier.padding(bottom = 8.dp))
 
 
             if (CartManager.shopCartItems.contains(product)){
@@ -211,7 +294,7 @@ fun shopCard(
 data class Product(
     val name: String,
     val price: Double,
-    val imageResourceId: Int
+    val imageResourceId: String
 ) {
     companion object {
         const val MIN_PRICE = 5.00
