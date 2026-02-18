@@ -102,7 +102,11 @@ fun UsernamePassword(navController: NavHostController){
         )
         Spacer(modifier = Modifier.padding(15.dp))
 
-        Button(onClick = {navController.navigate(Screen.ShopandProfile.route)}) {
+        Button(onClick = {
+            navController.navigate(Screen.Shop){
+                popUpTo(Screen.Main) {inclusive = true}
+            }
+        }) {
             Text(text = "->",
                 fontSize = 40.sp)
         }
