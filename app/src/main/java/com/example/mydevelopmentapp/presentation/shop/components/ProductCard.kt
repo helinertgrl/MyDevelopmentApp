@@ -21,12 +21,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.mydevelopmentapp.R
-import com.example.mydevelopmentapp.presentation.shop.Product
+import com.example.mydevelopmentapp.data.model.Product
 import com.example.mydevelopmentapp.util.CartManager
 import com.example.mydevelopmentapp.util.toCurrencyString
 
 @Composable
-fun ShopCard(
+fun ProductCard(
     product: Product
 ){
     Card(
