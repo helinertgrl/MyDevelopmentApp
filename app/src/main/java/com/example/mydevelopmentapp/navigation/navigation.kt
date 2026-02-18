@@ -1,9 +1,14 @@
-package com.example.mydevelopmentapp
+package com.example.mydevelopmentapp.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.mydevelopmentapp.presentation.cart.CartScreen
+import com.example.mydevelopmentapp.presentation.main.MainScreen
+import com.example.mydevelopmentapp.presentation.profile.ProfileScreen
+import com.example.mydevelopmentapp.presentation.shop.ShopScreen
+import com.example.mydevelopmentapp.presentation.ShopandProfile
 
 @Composable
 fun navigation(){

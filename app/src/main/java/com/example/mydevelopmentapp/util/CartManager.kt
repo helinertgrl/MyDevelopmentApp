@@ -1,7 +1,7 @@
-package com.example.mydevelopmentapp
+package com.example.mydevelopmentapp.util
 
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
+import com.example.mydevelopmentapp.presentation.shop.Product
 
 object CartManager {
     val shopCartItems = mutableStateListOf<Product>()

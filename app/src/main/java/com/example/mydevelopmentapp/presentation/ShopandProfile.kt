@@ -1,4 +1,4 @@
-package com.example.mydevelopmentapp
+package com.example.mydevelopmentapp.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -15,8 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import com.example.mydevelopmentapp.navigation.Screen
 
 @Composable
 fun ShopandProfile(navController: NavHostController){
