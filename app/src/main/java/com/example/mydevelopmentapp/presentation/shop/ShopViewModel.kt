@@ -6,6 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.mydevelopmentapp.data.model.Product
 import com.example.mydevelopmentapp.data.repository.ProductRepository
 import com.example.mydevelopmentapp.util.sortByField
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class ShopViewModel (
@@ -21,6 +23,12 @@ class ShopViewModel (
     val showExpensiveOnly =  mutableStateOf<Boolean>(false)
     val sortOption =  mutableStateOf<String>("none")     //Kullanıcının hangi sıralamayı seçtiğini tutuyor.
 
+    val cartItems = repository.allCartItems.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = emptyList()
+    )
+
     init {
         loadProducts()
     }
@@ -35,6 +43,17 @@ class ShopViewModel (
                 errorMessage.value = "Hata: ${e.message}"
             } finally {
                 isLoading.value = false
+            }
+        }
+    }
+
+    fun toggleCart(product: Product) {
+        viewModelScope.launch {
+            val isInCart = cartItems.value.any { it.name == product.name }
+            if (isInCart) {
+                repository.removeFromCart(product)
+            } else {
+                repository.addToCart(product)
             }
         }
     }
