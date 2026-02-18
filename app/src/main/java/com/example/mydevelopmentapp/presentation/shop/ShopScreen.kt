@@ -42,7 +42,7 @@ fun ShopScreen(
             title = {Text(text = "Shopping")},
             actions = {
                 IconButton(
-                    onClick = {navController.navigate(Screen.CartScreen.route)}
+                    onClick = {navController.navigate(Screen.Cart)}
                 ) {
                     Icon(
                         imageVector = Icons.Default.ShoppingCart,
