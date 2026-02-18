@@ -19,7 +19,8 @@ fun AppNavigation(shopViewModel: ShopViewModel){
 
     NavHost(
         navController = navController,
-        startDestination = Screen.Main) {
+        startDestination = Screen.Main
+    ) {
         composable<Screen.Main> {
             val mainViewModel: MainViewModel = viewModel()
             MainScreen(navController,mainViewModel)

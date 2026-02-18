@@ -1,9 +1,9 @@
 package com.example.mydevelopmentapp.data.repository
 
-import com.example.mydevelopmentapp.presentation.shop.Product
 import com.example.mydevelopmentapp.data.api.CoffeeApiService
 import com.example.mydevelopmentapp.data.local.ProductDao
 import com.example.mydevelopmentapp.data.local.ProductEntity
+import com.example.mydevelopmentapp.data.model.Product
 import com.example.mydevelopmentapp.data.model.ProductResponse
 
 class ProductRepository(
