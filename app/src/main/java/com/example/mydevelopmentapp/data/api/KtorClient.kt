@@ -15,7 +15,7 @@ object KtorClient {
         install(ContentNegotiation) {
             json(
                 Json {
-                    ignoreUnknownKeys = true   //API fazla key gönderirse hata vermez
+                    ignoreUnknownKeys = true
                     isLenient = true
                 }
             )

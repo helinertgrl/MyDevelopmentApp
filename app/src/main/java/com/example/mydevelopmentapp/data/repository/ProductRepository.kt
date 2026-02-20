@@ -1,17 +1,20 @@
 package com.example.mydevelopmentapp.data.repository
 
-import com.example.mydevelopmentapp.Product
 import com.example.mydevelopmentapp.data.api.CoffeeApiService
+import com.example.mydevelopmentapp.data.local.CartDao
+import com.example.mydevelopmentapp.data.local.CartEntity
 import com.example.mydevelopmentapp.data.local.ProductDao
 import com.example.mydevelopmentapp.data.local.ProductEntity
+import com.example.mydevelopmentapp.data.model.Product
 import com.example.mydevelopmentapp.data.model.ProductResponse
+import kotlinx.coroutines.flow.Flow
 
 class ProductRepository(
     private val apiService: CoffeeApiService,
-    private val productDao: ProductDao
+    private val productDao: ProductDao,
+    private val cartDao: CartDao
 ){
 
-    // API'dan ve Room'dan veri çekme
     suspend fun getProducts(): List<Product> {
         val cachedProducts = productDao.getAllProducts()
 
@@ -26,14 +29,37 @@ class ProductRepository(
 
         return entities.map { it.toProduct() }
     }
+
+    val allCartItems: Flow<List<CartEntity>> = cartDao.getAllCartItems()
+
+    suspend fun addToCart(product: Product) {
+        cartDao.addToCart(CartEntity(
+            id = product.name.hashCode(),
+            name = product.name,
+            price = product.price,
+            imageUrl = product.imageResourceId
+        ))
+    }
+
+    suspend fun removeFromCart(product: Product) {
+        cartDao.removeFromCart(CartEntity(
+            id = product.name.hashCode(),
+            name = product.name,
+            price = product.price,
+            imageUrl = product.imageResourceId
+        ))
+    }
+
+    suspend fun clearCart() {
+        cartDao.clearCart()
+    }
 }
 
-// Extension fonksiyonları
 private fun ProductEntity.toProduct(): Product {
     return Product(
         name = this.name,
         price = this.price,
-        imageResourceId = this.imageUrl  // URL artık
+        imageResourceId = this.imageUrl
     )
 }
 
