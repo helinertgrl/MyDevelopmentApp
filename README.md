@@ -43,7 +43,7 @@
 
 | Login | Shop | Cart | Profile |
 |:---:|:---:|:---:|:---:|
-| <img src="screenshots/login.png" width="180"/> | <img src="screenshots/shop.png" width="180"/> | <img src="screenshots/cart.png" width="180"/> | <img src="screenshots/profile.png" width="180"/> |
+| <img src="screenshot/Main.png" width="180"/> | <img src="screenshot/Shop.png" width="180"/> | <img src="screenshot/Cart.png" width="180"/> | <img src="screenshot/Profile.png" width="180"/> |
 | Firebase Auth | Search & Filter | Room DB | User Profile |
 
 </div>
