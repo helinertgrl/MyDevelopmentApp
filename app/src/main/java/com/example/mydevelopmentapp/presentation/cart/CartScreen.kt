@@ -20,16 +20,17 @@ import com.example.mydevelopmentapp.util.toCurrencyString
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CartScreen(
-    navController: NavHostController,
     viewModel: CartViewModel
 ) {
     val cartItems by viewModel.cartItems.collectAsState()
     val total by viewModel.totalPrice.collectAsState()
 
+    val context = androidx.compose.ui.platform.LocalContext.current
+
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = "Sepetim", fontWeight = FontWeight.Bold) },
+                title = { Text(text = "My Cart", fontWeight = FontWeight.Bold) },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.surface,
                     titleContentColor = MaterialTheme.colorScheme.primary
@@ -51,7 +52,7 @@ fun CartScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Column {
-                            Text(text = "Toplam", fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            Text(text = "Total", fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
                             Text(
                                 text = total.toCurrencyString(),
                                 fontSize = 24.sp,
@@ -60,11 +61,15 @@ fun CartScreen(
                             )
                         }
                         Button(
-                            onClick = { /* Ödeme veya başarı sayfasına git işlemi eklenecek */ },
+                            onClick = {
+                                viewModel.checkout {
+                                    android.widget.Toast.makeText(context, "Order placed successfully!", android.widget.Toast.LENGTH_SHORT).show()
+                                }
+                            },
                             shape = RoundedCornerShape(12.dp),
                             contentPadding = PaddingValues(horizontal = 32.dp, vertical = 12.dp)
                         ) {
-                            Text("Siparişi Ver", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                            Text("Checkout", fontSize = 16.sp, fontWeight = FontWeight.Bold)
                         }
                     }
                 }
@@ -79,7 +84,7 @@ fun CartScreen(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "Sepetiniz şu an boş.",
+                    text = "Your cart is currently empty.",
                     fontSize = 18.sp,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )

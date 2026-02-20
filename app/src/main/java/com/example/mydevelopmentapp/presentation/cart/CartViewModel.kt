@@ -12,9 +12,8 @@ import com.example.mydevelopmentapp.data.local.toProduct
 
 class CartViewModel(private val repository: ProductRepository) : ViewModel() {
 
-
     val cartItems = repository.allCartItems.map { entities ->
-        entities.map { it.toProduct() } // Entity -> Model dönüşümü
+        entities.map { it.toProduct() }
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
@@ -32,6 +31,13 @@ class CartViewModel(private val repository: ProductRepository) : ViewModel() {
     fun removeFromCart(product: Product) {
         viewModelScope.launch {
             repository.removeFromCart(product)
+        }
+    }
+
+    fun checkout(onSuccess: () -> Unit) {
+        viewModelScope.launch {
+            repository.clearCart()
+            onSuccess()
         }
     }
 }

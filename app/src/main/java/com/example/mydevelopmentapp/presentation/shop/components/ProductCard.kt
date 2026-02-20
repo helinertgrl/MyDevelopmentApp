@@ -1,5 +1,6 @@
 package com.example.mydevelopmentapp.presentation.shop.components
 
+import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -79,7 +80,8 @@ fun ProductCard(
                     color = MaterialTheme.colorScheme.onSurface,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.basicMarquee()
                 )
 
                 Spacer(modifier = Modifier.height(4.dp))
@@ -108,7 +110,7 @@ fun ProductCard(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = if (isInCart) "Çıkar" else "Ekle",
+                        text = if (isInCart) "Remove" else "Add",
                         fontSize = 14.sp
                     )
                 }

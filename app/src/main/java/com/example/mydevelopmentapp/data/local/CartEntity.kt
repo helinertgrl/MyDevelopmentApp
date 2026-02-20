@@ -10,7 +10,7 @@ data class CartEntity(
     val name: String,
     val price: Double,
     val imageUrl: String,
-    val quantity: Int = 1 // İleride ürün adedi eklemek için
+    val quantity: Int = 1
 )
 
 fun CartEntity.toProduct(): Product {

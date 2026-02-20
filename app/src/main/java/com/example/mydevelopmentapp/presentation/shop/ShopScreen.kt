@@ -1,6 +1,7 @@
 package com.example.mydevelopmentapp.presentation.shop
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -16,19 +17,18 @@ import com.example.mydevelopmentapp.presentation.shop.components.ProductCard
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ShopScreen(
-    navController: NavHostController,
     viewModel: ShopViewModel
 ) {
     val products = viewModel.getFilteredProducts()
     val isLoading by viewModel.isLoading
     val errorMessage by viewModel.errorMessage
-    // Room'dan gelen sepet verisini State olarak dinliyoruz
+
     val cartItems by viewModel.cartItems.collectAsState()
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = "Kahve Vitrini", fontWeight = FontWeight.Bold) },
+                title = { Text(text = "Coffee Shop", fontWeight = FontWeight.Bold) },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.surface,
                     titleContentColor = MaterialTheme.colorScheme.primary
@@ -46,7 +46,7 @@ fun ShopScreen(
             OutlinedTextField(
                 value = viewModel.searchText.value,
                 onValueChange = { viewModel.searchText.value = it },
-                label = { Text("Ürünlerde Ara") },
+                label = { Text("Search products") },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp, vertical = 8.dp),
@@ -55,7 +55,7 @@ fun ShopScreen(
             )
 
             Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp, vertical = 8.dp)
@@ -66,7 +66,7 @@ fun ShopScreen(
                         viewModel.sortOption.value = "none"
                         viewModel.showExpensiveOnly.value = false
                     },
-                    label = { Text("Tümü") }
+                    label = { Text("All") }
                 )
                 FilterChip(
                     selected = viewModel.sortOption.value == "price",
@@ -74,7 +74,7 @@ fun ShopScreen(
                         viewModel.sortOption.value = "price"
                         viewModel.showExpensiveOnly.value = false
                     },
-                    label = { Text("Fiyat") }
+                    label = { Text("Price") }
                 )
                 FilterChip(
                     selected = viewModel.sortOption.value == "name",
@@ -82,7 +82,7 @@ fun ShopScreen(
                         viewModel.sortOption.value = "name"
                         viewModel.showExpensiveOnly.value = false
                     },
-                    label = { Text("İsim") }
+                    label = { Text("Name") }
                 )
                 FilterChip(
                     selected = viewModel.showExpensiveOnly.value,
@@ -90,7 +90,7 @@ fun ShopScreen(
                         viewModel.showExpensiveOnly.value = !viewModel.showExpensiveOnly.value
                         viewModel.sortOption.value = "none"
                     },
-                    label = { Text("Pahalı") }
+                    label = { Text("Premium") }
                 )
             }
 
@@ -100,7 +100,7 @@ fun ShopScreen(
                 }
             } else if (errorMessage != null) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text(text = errorMessage ?: "Bir hata oluştu", color = MaterialTheme.colorScheme.error)
+                    Text(text = errorMessage ?: "An error occurred", color = MaterialTheme.colorScheme.error)
                 }
             } else {
                 LazyVerticalGrid(
@@ -109,7 +109,7 @@ fun ShopScreen(
                     contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp)
                 ) {
                     items(products) { product ->
-                        // Ürün sepette var mı kontrol ediyoruz
+
                         val isInCart = cartItems.any { it.name == product.name }
                         ProductCard(
                             product = product,

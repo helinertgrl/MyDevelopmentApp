@@ -44,18 +44,15 @@ fun AppNavigation() {
         cartDao = database.cartDao()
     )
 
-    // Alt menüde görünecek sekmelerin listesi
     val bottomNavItems = listOf(
         BottomNavItem.Shop,
         BottomNavItem.Cart,
         BottomNavItem.Profile
     )
 
-    // Hangi ekranda olduğumuzu takip ediyoruz
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
-    // Login ekranında mıyız kontrolü (Login'de alt bar gizlenecek)
     val isMainScreen = currentDestination?.hasRoute<Screen.Main>() == true
 
     Scaffold(
@@ -71,7 +68,6 @@ fun AppNavigation() {
                             selected = isSelected,
                             onClick = {
                                 navController.navigate(item.route) {
-                                    // Geri tuşuna basıldığında yığılmayı önlemek için başlangıç hedefine kadar pop yap
                                     popUpTo(navController.graph.findStartDestination().id) {
                                         saveState = true
                                     }
@@ -88,7 +84,7 @@ fun AppNavigation() {
         NavHost(
             navController = navController,
             startDestination = Screen.Main,
-            modifier = Modifier.padding(innerPadding) // Scaffold'un alt barı içeriğin üstüne binmesin diye
+            modifier = Modifier.padding(innerPadding)
         ) {
             composable<Screen.Main> {
                 val mainViewModel: MainViewModel = viewModel()
@@ -97,7 +93,7 @@ fun AppNavigation() {
 
             composable<Screen.Shop> {
                 val shopViewModel: ShopViewModel = viewModel(factory = ViewModelFactory(repository))
-                ShopScreen(navController, shopViewModel)
+                ShopScreen(viewModel = shopViewModel)
             }
 
             composable<Screen.Profile> {
@@ -107,7 +103,7 @@ fun AppNavigation() {
 
             composable<Screen.Cart> {
                 val cartViewModel: CartViewModel = viewModel(factory = ViewModelFactory(repository))
-                CartScreen(navController, cartViewModel)
+                CartScreen(viewModel =  cartViewModel)
             }
         }
     }

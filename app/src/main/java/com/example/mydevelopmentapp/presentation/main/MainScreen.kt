@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
@@ -42,9 +43,9 @@ fun MainScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Başlık
+
         Text(
-            text = if (isLoginMode) "Giriş Yap" else "Kayıt Ol",
+            text = if (isLoginMode) "Login" else "Sign Up",
             fontSize = 32.sp,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.primary
@@ -52,30 +53,29 @@ fun MainScreen(
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        // E-posta Alanı
         OutlinedTextField(
             value = viewModel.email.value,
             onValueChange = { viewModel.email.value = it },
-            label = { Text("E-posta") },
+            label = { Text("Email") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
             modifier = Modifier.fillMaxWidth(),
-            singleLine = true
+            singleLine = true,
+            shape = RoundedCornerShape(12.dp)
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Şifre Alanı
         OutlinedTextField(
             value = viewModel.password.value,
             onValueChange = { viewModel.password.value = it },
-            label = { Text("Şifre") },
+            label = { Text("Password") },
             visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             modifier = Modifier.fillMaxWidth(),
-            singleLine = true
+            singleLine = true,
+            shape = RoundedCornerShape(12.dp)
         )
 
-        // Hata Mesajı Gösterimi
         if (viewModel.errorMessage.value != null) {
             Spacer(modifier = Modifier.height(8.dp))
             Text(
@@ -87,11 +87,9 @@ fun MainScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Giriş / Kayıt Butonu
         Button(
             onClick = {
                 viewModel.onAuthClick {
-                    // Başarılı olursa Shop ekranına geç ve geri dönmeyi engelle
                     navController.navigate(Screen.Shop) {
                         popUpTo(Screen.Main) { inclusive = true }
                     }
@@ -100,24 +98,23 @@ fun MainScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(50.dp),
-            enabled = !isLoading // Yükleniyorken butona tekrar basılmasın
+            enabled = !isLoading
         ) {
             if (isLoading) {
                 CircularProgressIndicator(color = Color.White, modifier = Modifier.size(24.dp))
             } else {
-                Text(text = if (isLoginMode) "Giriş" else "Kayıt Ol", fontSize = 18.sp)
+                Text(text = if (isLoginMode) "Login" else "Sign Up", fontSize = 18.sp)
             }
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Mod Değiştirme Metni
         Text(
-            text = if (isLoginMode) "Hesabın yok mu? Kayıt Ol" else "Zaten hesabın var mı? Giriş Yap",
+            text = if (isLoginMode) "Don't have an account? Sign Up" else "Already have an account? Login",
             color = MaterialTheme.colorScheme.primary,
             modifier = Modifier.clickable {
                 viewModel.isLoginMode.value = !viewModel.isLoginMode.value
-                viewModel.errorMessage.value = null // Mod değişirken hatayı temizle
+                viewModel.errorMessage.value = null
             }
         )
     }

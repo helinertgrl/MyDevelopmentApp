@@ -6,10 +6,8 @@ import com.google.firebase.auth.FirebaseAuth
 
 class MainViewModel : ViewModel() {
 
-    // Firebase Auth nesnesi
     private val auth = FirebaseAuth.getInstance()
 
-    // Ekranın hangi modda olduğunu tutar (Giriş mi, Kayıt mı?)
     var isLoginMode = mutableStateOf(true)
 
     var email = mutableStateOf("")
@@ -19,9 +17,9 @@ class MainViewModel : ViewModel() {
     var errorMessage = mutableStateOf<String?>(null)
 
     fun onAuthClick(onSuccess: () -> Unit) {
-        // Boş alan kontrolü
+
         if (email.value.isBlank() || password.value.isBlank()) {
-            errorMessage.value = "Lütfen e-posta ve şifre girin."
+            errorMessage.value = "Please enter email and password."
             return
         }
 
@@ -29,25 +27,23 @@ class MainViewModel : ViewModel() {
         errorMessage.value = null
 
         if (isLoginMode.value) {
-            // Firebase ile Giriş Yap
             auth.signInWithEmailAndPassword(email.value, password.value)
                 .addOnCompleteListener { task ->
                     isLoading.value = false
                     if (task.isSuccessful) {
                         onSuccess()
                     } else {
-                        errorMessage.value = task.exception?.localizedMessage ?: "Giriş başarısız oldu."
+                        errorMessage.value = task.exception?.localizedMessage ?: "Login failed."
                     }
                 }
         } else {
-            // Firebase ile Yeni Kayıt Oluştur
             auth.createUserWithEmailAndPassword(email.value, password.value)
                 .addOnCompleteListener { task ->
                     isLoading.value = false
                     if (task.isSuccessful) {
                         onSuccess()
                     } else {
-                        errorMessage.value = task.exception?.localizedMessage ?: "Kayıt başarısız oldu."
+                        errorMessage.value = task.exception?.localizedMessage ?: "Registration failed."
                     }
                 }
         }

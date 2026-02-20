@@ -14,14 +14,13 @@ class ShopViewModel (
     private val repository: ProductRepository
 ): ViewModel() {
 
-    // State'ler
     var products =  mutableStateOf<List<Product>>(emptyList())
     var isLoading = mutableStateOf(false)
     var errorMessage = mutableStateOf<String?>(null)
 
     val searchText = mutableStateOf("")
     val showExpensiveOnly =  mutableStateOf<Boolean>(false)
-    val sortOption =  mutableStateOf<String>("none")     //Kullanıcının hangi sıralamayı seçtiğini tutuyor.
+    val sortOption =  mutableStateOf<String>("none")
 
     val cartItems = repository.allCartItems.stateIn(
         scope = viewModelScope,
@@ -40,7 +39,7 @@ class ShopViewModel (
                 products.value = repository.getProducts()
                 errorMessage.value = null
             } catch (e: Exception) {
-                errorMessage.value = "Hata: ${e.message}"
+                errorMessage.value = "Error: ${e.message}"
             } finally {
                 isLoading.value = false
             }

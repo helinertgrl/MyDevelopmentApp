@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface CartDao {
     @Query("SELECT * FROM cart_items")
-    fun getAllCartItems(): Flow<List<CartEntity>> // Flow kullanarak veritabanı değiştikçe UI otomatik güncellenir
+    fun getAllCartItems(): Flow<List<CartEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addToCart(item: CartEntity)

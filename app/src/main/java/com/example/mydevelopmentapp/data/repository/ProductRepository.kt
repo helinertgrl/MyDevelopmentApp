@@ -15,7 +15,6 @@ class ProductRepository(
     private val cartDao: CartDao
 ){
 
-    // API'dan ve Room'dan veri çekme
     suspend fun getProducts(): List<Product> {
         val cachedProducts = productDao.getAllProducts()
 
@@ -50,14 +49,17 @@ class ProductRepository(
             imageUrl = product.imageResourceId
         ))
     }
+
+    suspend fun clearCart() {
+        cartDao.clearCart()
+    }
 }
 
-// Extension fonksiyonları
 private fun ProductEntity.toProduct(): Product {
     return Product(
         name = this.name,
         price = this.price,
-        imageResourceId = this.imageUrl  // URL artık
+        imageResourceId = this.imageUrl
     )
 }
 

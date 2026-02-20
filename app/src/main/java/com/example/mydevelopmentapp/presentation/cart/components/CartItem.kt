@@ -76,7 +76,7 @@ fun CartItem(
             ) {
                 Icon(
                     imageVector = Icons.Default.Delete,
-                    contentDescription = "Ürünü Sil"
+                    contentDescription = "Remove item"
                 )
             }
         }
