@@ -1,307 +1,253 @@
-# Coffee Shop App - Geliştirme Süreci
+<div align="center">
 
-## 📋 Proje Hakkında
+<!-- Animated Typing Header -->
+<a href="https://github.com/helinertgrl">
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=13&pause=1000&color=7F52FF&center=true&vCenter=true&width=600&lines=Firebase+%E2%80%A2+Ktor+%E2%80%A2+Room+%E2%80%A2+Jetpack+Compose" alt="stack"/>
+</a>
 
-Bu proje, Android geliştirme sürecimdeki öğrenimlerimi belgelemek ve kendimi geliştirmek amacıyla oluşturduğum bir kahve dükkanı uygulamasıdır. Uygulama başlangıçta yerel verilerle çalışırken, yeni versiyonda internet bağlantısı eklenerek Fake bir API entegrasyonu sağlanmıştır.
+<br/>
 
----
+<picture>
+  <img src="https://capsule-render.vercel.app/api?type=venom&color=gradient&customColorList=6,11,20&height=300&text=☕%20Coffee%20Shop&fontSize=70&fontColor=fff&animation=twinkling&fontAlignY=55&desc=A%20Modern%20Android%20Shopping%20Experience&descAlignY=75&descSize=18&descColor=cccccc" width="100%"/>
+</picture>
 
-## 🚀 Sürüm Geçmişi
+<!-- Badges -->
+<p align="center">
+  <img src="https://img.shields.io/badge/Platform-Android-3DDC84?style=for-the-badge&logo=android&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Language-Kotlin-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white"/>
+  <img src="https://img.shields.io/badge/UI-Jetpack%20Compose-4285F4?style=for-the-badge&logo=jetpackcompose&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Firebase-Auth-FFCA28?style=for-the-badge&logo=firebase&logoColor=black"/>
+  <img src="https://img.shields.io/badge/CI%2FCD-GitHub%20Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white"/>
+</p>
 
-### **v2.0 - Başlangıç Versiyonu**
-- Temel Compose UI yapısı
-- Yerel ürün listesi
-- Sepet yönetimi
-- Navigasyon sistemi
+<p align="center">
+  <img src="https://img.shields.io/badge/Min%20SDK-24-green?style=flat-square"/>
+  <img src="https://img.shields.io/badge/Target%20SDK-36-blue?style=flat-square"/>
+  <img src="https://img.shields.io/badge/Version-1.0-orange?style=flat-square"/>
+  <img src="https://img.shields.io/badge/Build-Passing-brightgreen?style=flat-square&logo=githubactions"/>
+</p>
 
-### **v3.0 - Güncel Versiyon** (Yeni Özellikler)
-- **MockAPI.io** entegrasyonu
-- **Ktor** HTTP client implementasyonu
-- **Room Database** ile offline cache
-- **Coil/AsyncImage** ile network görsel yükleme
-- Repository pattern implementasyonu
+<br/>
 
----
+> **A full-stack Android application built with modern best practices — featuring Firebase Authentication, a REST API via Ktor, local persistence with Room, and a reactive UI powered by Jetpack Compose.**
 
-## 🛠️ Kullanılan Teknolojiler
+<br/>
 
-### **UI & Framework**
-| Teknoloji | Amaç |
-|-----------|------|
-| Jetpack Compose | Modern UI oluşturma |
-| Navigation Component | Sayfa geçişleri |
-| Material 3 | Tasarım sistemi |
-| Coil | Görsel yükleme |
-
-### **Network & Data**
-| Teknoloji | Amaç |
-|-----------|------|
-| Ktor | HTTP istemci |
-| Kotlin Serialization | JSON parsing |
-| MockAPI.io | Fake REST API |
-
-### **Database**
-| Teknoloji | Amaç |
-|-----------|------|
-| Room Database | Yerel veri depolama |
-| DAO Pattern | Veri erişim katmanı |
-
-### **Architecture**
-| Teknoloji | Amaç |
-|-----------|------|
-| Repository Pattern | Data katmanı soyutlama |
-| MVVM (kısmi) | Mimari yapı |
+</div>
 
 ---
 
+## 📱 Screenshots
 
+<div align="center">
 
-## 🔄 Eklenen Yeni Özellikler (v3.0)
+| Login | Shop | Cart | Profile |
+|:---:|:---:|:---:|:---:|
+| <img src="screenshots/login.png" width="180"/> | <img src="screenshots/shop.png" width="180"/> | <img src="screenshots/cart.png" width="180"/> | <img src="screenshots/profile.png" width="180"/> |
+| Firebase Auth | Search & Filter | Room DB | User Profile |
 
-### **1. Network Entegrasyonu**
-- ✅ MockAPI.io üzerinden fake REST API
-- ✅ Ktor HTTP client konfigürasyonu
-- ✅ JSON serialization/deserialization
-- ✅ Hata yönetimi ve loading state'leri
-
-### **2. Veri Yönetimi**
-- ✅ Room database implementasyonu
-- ✅ Entity, DAO, Database sınıfları
-- ✅ Repository pattern implementasyonu
-- ✅ Offline cache mekanizması
-
-### **3. UI Geliştirmeleri**
-- ✅ AsyncImage ile network görsel yükleme
-- ✅ Loading ve error state gösterimi
-- ✅ Ürün kartlarının responsive tasarımı
-- ✅ Görsel placeholder'ları
-
-### **4. Mimari İyileştirmeler**
-- ✅ Katmanlı mimari
-- ✅ Data class'ların ayrılması
-- ✅ Extension fonksiyonlar
-- ✅ Clean code prensipleri
+</div>
 
 ---
 
-## 📁 Paket Yapısı
+## ✨ Features
 
-```
-com.example.mydevelopmentapp/
-├── data/
-│   ├── api/
-│   │   ├── CoffeeApiService.kt    # API servisi
-│   │   └── KtorClient.kt          # Ktor konfigürasyonu
-│   ├── local/
-│   │   ├── ProductEntity.kt       # Room entity
-│   │   ├── ProductDao.kt          # Database operations
-│   │   └── AppDatabase.kt         # Database instance
-│   ├── model/
-│   │   └── ProductResponse.kt     # API response model
-│   └── repository/
-│       └── ProductRepository.kt   # Data repository
-├── ui/
-│   ├── screens/
-│   │   ├── MainScreen.kt
-│   │   ├── ShopScreen.kt
-│   │   ├── ProfileScreen.kt
-│   │   ├── CartScreen.kt
-│   │   └── ShopandProfile.kt
-│   └── navigation/
-│       └── Navigation.kt
-├── utils/
-│   └── Extensions.kt              # Extension fonksiyonlar
-└── MainActivity.kt
+<div align="center">
+
+| 🔐 Authentication | 🛍️ Shopping | 🛒 Cart | 👤 Profile |
+|---|---|---|---|
+| Firebase Email/Password Login | Product listing from REST API | Add / Remove items | Display user info |
+| Sign Up & Sign In flows | Search by name | Real-time total price | Logout functionality |
+| Session persistence | Filter by price & premium | Persistent via Room DB | — |
+| — | Sort by name or price | Checkout button | — |
+
+</div>
+
+---
+
+## 🏗️ Architecture
+
+This project follows **MVVM (Model-View-ViewModel)** architecture with a clean **layered package structure** for scalability and separation of concerns.
+
+```mermaid
+graph TD
+    subgraph UI ["🖥️  UI LAYER — Jetpack Compose"]
+        A["🛍️ ShopScreen"]
+        B["🛒 CartScreen"]
+        C["👤 ProfileScreen"]
+    end
+
+    subgraph VM ["⚙️  VIEWMODEL LAYER"]
+        D["ShopViewModel\nState + Business Logic"]
+        E["CartViewModel\nState + Business Logic"]
+    end
+
+    subgraph DATA ["💾  DATA LAYER"]
+        F["ProductRepository\nSingle Source of Truth"]
+        G["🗄️ Room Database\nLocal Persistence"]
+        H["🌐 Ktor / MockAPI\nRemote Data Source"]
+    end
+
+    subgraph AUTH ["🔥  FIREBASE"]
+        I["Firebase Auth\nLogin · Session"]
+    end
+
+    A -->|observes state| D
+    B -->|observes state| E
+    C -->|reads user| I
+    D -->|reads & writes| F
+    E -->|reads & writes| F
+    F -->|cache| G
+    F -->|fetch| H
+
+    style UI fill:#1a2a4a,stroke:#4285F4,color:#fff
+    style VM fill:#2a1a4a,stroke:#7F52FF,color:#fff
+    style DATA fill:#1a3a2a,stroke:#0f9d58,color:#fff
+    style AUTH fill:#2a2a1a,stroke:#FFCA28,color:#fff
 ```
 
----
+<br/>
 
-## 🎯 Projenin Amacı
+### 🔄 Data Flow
 
-Bu projeyi geliştirirken temel hedeflerim:
+```mermaid
+flowchart LR
+    API["☁️ MockAPI\nREST Endpoint"]
+    KTOR["⚡ Ktor Client\nHTTP Request"]
+    REPO["📦 Repository\nSource of Truth"]
+    VM["🧠 ViewModel\nStateFlow"]
+    UI["📱 Compose UI\ncollectAsState()"]
+    ROOM["🗄️ Room DB\nLocal Cache"]
 
-1. **Öğrenme Sürecini Belgelemek** - Her yeni teknolojiyi adım adım uygulamak
-2. **Gerçek Dünya Senaryoları** - Network, database, cache gibi gerçek ihtiyaçları çözmek
-3. **Kod Kalitesi** - Clean architecture ve best practices uygulamak
-4. **UI/UX Deneyimi** - Modern ve kullanıcı dostu arayüzler tasarlamak
-5. **Problem Çözme** - Karşılaşılan hataları araştırıp çözüm üretmek
+    API -->|"GET /products"| KTOR
+    KTOR -->|"parse JSON"| REPO
+    REPO <-->|"read / write"| ROOM
+    REPO -->|"emit Flow"| VM
+    VM -->|"State → recompose"| UI
 
----
-
-## 📱 Ekranlar ve Özellikler
-
-| Ekran | Özellikler |
-|-------|------------|
-| **MainScreen** | Giriş/Üye olma/Guest modu |
-| **ShopScreen** | Ürün listesi, filtreleme, sıralama, sepete ekleme |
-| **ProfileScreen** | Kullanıcı profili görüntüleme |
-| **CartScreen** | Sepet özeti, ürün çıkarma, toplam tutar |
-
----
-
-## 📝 Öğrenilen Kavramlar
-
-- Jetpack Compose ile modern UI tasarımı
-- Ktor ile network işlemleri
-- Room Database ile lokal veri depolama
-- Repository pattern ve clean architecture
-- State management ve lifecycle
-- Asenkron programlama (coroutines)
-- Error handling ve loading state'leri
-- API entegrasyonu ve JSON parsing
-
----
-
-# Coffee Shop App - Development Process
-
-## 📋 About the Project
-
-This project is a coffee shop application I created to document my Android development learning process and improve my skills. The app initially worked with local data, and in the new version, internet connectivity has been added with real API integration.
-
----
-
-## 🚀 Version History
-
-### **v2.0 - Initial Version**
-- Basic Compose UI structure
-- Local product list
-- Cart management
-- Navigation system
-
-### **v3.0 - Current Version** (New Features)
-- **MockAPI.io** integration
-- **Ktor** HTTP client implementation
-- **Room Database** for offline caching
-- **Coil/AsyncImage** for network image loading
-- Repository pattern implementation
-
----
-
-## 🛠️ Technologies Used
-
-### **UI & Framework**
-| Technology | Purpose |
-|------------|---------|
-| Jetpack Compose | Modern UI creation |
-| Navigation Component | Page transitions |
-| Material 3 | Design system |
-| Coil | Image loading |
-
-### **Network & Data**
-| Technology | Purpose |
-|------------|---------|
-| Ktor | HTTP client |
-| Kotlin Serialization | JSON parsing |
-| MockAPI.io | Fake REST API |
-
-### **Database**
-| Technology | Purpose |
-|------------|---------|
-| Room Database | Local data storage |
-| DAO Pattern | Data access layer |
-
-### **Architecture**
-| Technology | Purpose |
-|------------|---------|
-| Repository Pattern | Data layer abstraction |
-| MVVM (partial) | Architecture structure |
-
----
-
-## 🔄 Added New Features (v3.0)
-
-### **1. Network Integration**
-- ✅ Fake REST API via MockAPI.io
-- ✅ Ktor HTTP client configuration
-- ✅ JSON serialization/deserialization
-- ✅ Error handling and loading states
-
-### **2. Data Management**
-- ✅ Room database implementation
-- ✅ Entity, DAO, Database classes
-- ✅ Repository pattern implementation
-- ✅ Offline cache mechanism
-
-### **3. UI Improvements**
-- ✅ AsyncImage for network image loading
-- ✅ Loading and error state display
-- ✅ Responsive product card design
-- ✅ Image placeholders
-
-### **4. Architectural Improvements**
-- ✅ Layered architecture
-- ✅ Separation of data classes
-- ✅ Extension functions
-- ✅ Clean code principles
-
----
-
-## 📁 Package Structure
-
-```
-com.example.mydevelopmentapp/
-├── data/
-│   ├── api/
-│   │   ├── CoffeeApiService.kt    # API service
-│   │   └── KtorClient.kt          # Ktor configuration
-│   ├── local/
-│   │   ├── ProductEntity.kt       # Room entity
-│   │   ├── ProductDao.kt          # Database operations
-│   │   └── AppDatabase.kt         # Database instance
-│   ├── model/
-│   │   └── ProductResponse.kt     # API response model
-│   └── repository/
-│       └── ProductRepository.kt   # Data repository
-├── ui/
-│   ├── screens/
-│   │   ├── MainScreen.kt
-│   │   ├── ShopScreen.kt
-│   │   ├── ProfileScreen.kt
-│   │   ├── CartScreen.kt
-│   │   └── ShopandProfile.kt
-│   └── navigation/
-│       └── Navigation.kt
-├── utils/
-│   └── Extensions.kt              # Extension functions
-└── MainActivity.kt
+    style API fill:#0f9d58,stroke:#0f9d58,color:#fff
+    style KTOR fill:#1c2128,stroke:#7F52FF,color:#fff
+    style REPO fill:#1c2128,stroke:#4285F4,color:#fff
+    style VM fill:#1c2128,stroke:#7F52FF,color:#fff
+    style UI fill:#4285F4,stroke:#4285F4,color:#fff
+    style ROOM fill:#1c2128,stroke:#0f9d58,color:#fff
 ```
 
 ---
 
-## 🎯 Project Goals
+## 🛠️ Tech Stack
 
-My main goals while developing this project:
-
-1. **Document Learning Process** - Implement each new technology step by step
-2. **Real-World Scenarios** - Solve real needs like network, database, cache
-3. **Code Quality** - Apply clean architecture and best practices
-4. **UI/UX Experience** - Design modern and user-friendly interfaces
-5. **Problem Solving** - Research and solve encountered errors
-
----
-
-## 📱 Screens and Features
-
-| Screen | Features |
-|--------|----------|
-| **MainScreen** | Login/Sign Up/Guest mode |
-| **ShopScreen** | Product list, filtering, sorting, add to cart |
-| **ProfileScreen** | User profile display |
-| **CartScreen** | Cart summary, remove items, total price |
+| Layer | Technology | Purpose |
+|---|---|---|
+| **Language** | Kotlin 2.0.21 | Primary programming language |
+| **UI** | Jetpack Compose + Material3 | Declarative modern UI |
+| **Architecture** | MVVM | Separation of concerns |
+| **Navigation** | Navigation Compose 2.9.6 | Screen routing |
+| **Networking** | Ktor Client 3.2.1 | REST API calls |
+| **Serialization** | Kotlinx Serialization | JSON parsing |
+| **Local DB** | Room 2.6.1 | Cart persistence |
+| **Image Loading** | Coil Compose 2.5.0 | Async image loading |
+| **Authentication** | Firebase Auth (BOM 33.7.0) | Secure login/signup |
+| **Build System** | Gradle KTS + Version Catalog | Dependency management |
+| **CI/CD** | GitHub Actions | Automated build & test |
+| **Min SDK** | API 24 (Android 7.0) | Wide device coverage |
+| **Target SDK** | API 36 | Latest Android features |
 
 ---
 
-## 📝 Learned Concepts
+## ⚙️ CI/CD Pipeline
 
-- Modern UI design with Jetpack Compose
-- Network operations with Ktor
-- Local data storage with Room Database
-- Repository pattern and clean architecture
-- State management and lifecycle
-- Asynchronous programming (coroutines)
-- Error handling and loading states
-- API integration and JSON parsing
+This project uses **GitHub Actions** for continuous integration. Every push to `master` triggers an automated build pipeline.
+
+```mermaid
+flowchart LR
+    PUSH["📤 Git Push\nto master"]
+    TRIGGER["⚡ GitHub Actions\nWorkflow Triggered"]
+    BUILD["🔨 Gradle Build\nassembleDebug · JDK 17"]
+    TEST["🧪 Tests\nlint + unit tests"]
+    SUCCESS["✅ PASSING\nCI/CD Test #3 · d19bc86"]
+
+    PUSH --> TRIGGER --> BUILD --> TEST --> SUCCESS
+
+    style PUSH fill:#1c2128,stroke:#6e7681,color:#fff
+    style TRIGGER fill:#1c2128,stroke:#2088FF,color:#fff
+    style BUILD fill:#1c2128,stroke:#7F52FF,color:#fff
+    style TEST fill:#1c2128,stroke:#FFCA28,color:#fff
+    style SUCCESS fill:#238636,stroke:#2ea043,color:#fff
+```
+
+> **Latest build:** `build: upgrade JDK to 17` — ✅ Android CI/CD Test #3 passed · commit `d19bc86`
 
 ---
 
-**Developer Note:** This project represents my ongoing journey in Android development. Each commit and version update reflects new concepts learned and applied. The goal is not just to build an app, but to understand the underlying principles and best practices of modern Android development.
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Android Studio **Hedgehog** or newer
+- JDK **17**
+- Android device or emulator (API 24+)
+- A **Firebase project** (for Authentication)
+
+### Installation
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/helinertgrl/MyDevelopmentApp.git
+
+# 2. Open in Android Studio
+# File → Open → Select the cloned folder
+
+# 3. Add your google-services.json
+# Place it in the /app directory from your Firebase Console
+
+# 4. Build & Run
+./gradlew assembleDebug
+```
+
+### Firebase Setup
+
+1. Go to [Firebase Console](https://console.firebase.google.com/)
+2. Create a new project
+3. Enable **Email/Password** sign-in method
+4. Download `google-services.json` and place it in `/app`
+
+---
+
+## 📦 Dependencies Overview
+
+```toml
+[versions]
+kotlin              = "2.0.21"
+agp                 = "8.12.3"
+composeBom          = "2024.09.00"
+room                = "2.6.1"
+ktor                = "3.2.1"
+coil                = "2.5.0"
+navigationCompose   = "2.9.6"
+firebaseBom         = "33.7.0"
+```
+
+---
+
+
+<div align="center">
+
+## 👩‍💻 Author
+
+**helinertgrl**
+
+*Android Developer in progress — learning, building, and growing every day.*
+
+<br/>
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-helin--ertuğrul-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/helin-ertu%C4%9Frul/)
+
+<br/>
+
+---
+
+*Built with ☕ and lots of Kotlin*
+
+<br/>
+</div>
