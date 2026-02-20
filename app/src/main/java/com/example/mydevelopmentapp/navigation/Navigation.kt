@@ -1,10 +1,22 @@
 package com.example.mydevelopmentapp.navigation
 
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavDestination.Companion.hasRoute
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.mydevelopmentapp.data.api.CoffeeApiService
 import com.example.mydevelopmentapp.data.api.KtorClient
@@ -21,7 +33,7 @@ import com.example.mydevelopmentapp.presentation.shop.ShopViewModel
 import com.example.mydevelopmentapp.util.ViewModelFactory
 
 @Composable
-fun AppNavigation(){
+fun AppNavigation() {
     val navController = rememberNavController()
     val context = LocalContext.current
 
@@ -32,28 +44,71 @@ fun AppNavigation(){
         cartDao = database.cartDao()
     )
 
-    NavHost(
-        navController = navController,
-        startDestination = Screen.Main
-    ) {
-        composable<Screen.Main> {
-            val mainViewModel: MainViewModel = viewModel()
-            MainScreen(navController,mainViewModel)
-        }
+    // Alt menüde görünecek sekmelerin listesi
+    val bottomNavItems = listOf(
+        BottomNavItem.Shop,
+        BottomNavItem.Cart,
+        BottomNavItem.Profile
+    )
 
-        composable<Screen.Shop> {
-            val shopViewModel: ShopViewModel = viewModel(factory = ViewModelFactory(repository))
-            ShopScreen(navController,shopViewModel)
-        }
+    // Hangi ekranda olduğumuzu takip ediyoruz
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
 
-        composable<Screen.Profile> {
-            val profileViewModel: ProfileViewModel = viewModel()
-            ProfileScreen(navController,profileViewModel)
-        }
+    // Login ekranında mıyız kontrolü (Login'de alt bar gizlenecek)
+    val isMainScreen = currentDestination?.hasRoute<Screen.Main>() == true
 
-        composable<Screen.Cart> {
-            val cartViewModel: CartViewModel = viewModel(factory = ViewModelFactory(repository))
-            CartScreen(navController)
+    Scaffold(
+        bottomBar = {
+            if (!isMainScreen) {
+                NavigationBar {
+                    bottomNavItems.forEach { item ->
+                        val isSelected = currentDestination?.hierarchy?.any { it.hasRoute(item.route::class) } == true
+
+                        NavigationBarItem(
+                            icon = { Icon(item.icon, contentDescription = item.label) },
+                            label = { Text(item.label) },
+                            selected = isSelected,
+                            onClick = {
+                                navController.navigate(item.route) {
+                                    // Geri tuşuna basıldığında yığılmayı önlemek için başlangıç hedefine kadar pop yap
+                                    popUpTo(navController.graph.findStartDestination().id) {
+                                        saveState = true
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = true
+                                }
+                            }
+                        )
+                    }
+                }
+            }
+        }
+    ) { innerPadding ->
+        NavHost(
+            navController = navController,
+            startDestination = Screen.Main,
+            modifier = Modifier.padding(innerPadding) // Scaffold'un alt barı içeriğin üstüne binmesin diye
+        ) {
+            composable<Screen.Main> {
+                val mainViewModel: MainViewModel = viewModel()
+                MainScreen(navController, mainViewModel)
+            }
+
+            composable<Screen.Shop> {
+                val shopViewModel: ShopViewModel = viewModel(factory = ViewModelFactory(repository))
+                ShopScreen(navController, shopViewModel)
+            }
+
+            composable<Screen.Profile> {
+                val profileViewModel: ProfileViewModel = viewModel()
+                ProfileScreen(navController, profileViewModel)
+            }
+
+            composable<Screen.Cart> {
+                val cartViewModel: CartViewModel = viewModel(factory = ViewModelFactory(repository))
+                CartScreen(navController)
+            }
         }
     }
 }
