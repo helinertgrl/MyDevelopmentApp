@@ -107,7 +107,7 @@ fun AppNavigation() {
 
             composable<Screen.Cart> {
                 val cartViewModel: CartViewModel = viewModel(factory = ViewModelFactory(repository))
-                CartScreen(navController)
+                CartScreen(navController, cartViewModel)
             }
         }
     }

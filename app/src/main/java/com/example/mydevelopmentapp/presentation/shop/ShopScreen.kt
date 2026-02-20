@@ -1,78 +1,64 @@
 package com.example.mydevelopmentapp.presentation.shop
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ShoppingCart
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilterChip
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.mydevelopmentapp.data.api.CoffeeApiService
-import com.example.mydevelopmentapp.data.api.KtorClient
-import com.example.mydevelopmentapp.data.local.AppDatabase
-import com.example.mydevelopmentapp.data.repository.ProductRepository
-import com.example.mydevelopmentapp.navigation.Screen
 import com.example.mydevelopmentapp.presentation.shop.components.ProductCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ShopScreen(
     navController: NavHostController,
-    viewModel: ShopViewModel) {
-
+    viewModel: ShopViewModel
+) {
     val products = viewModel.getFilteredProducts()
     val isLoading by viewModel.isLoading
     val errorMessage by viewModel.errorMessage
+    // Room'dan gelen sepet verisini State olarak dinliyoruz
+    val cartItems by viewModel.cartItems.collectAsState()
 
-    Scaffold (
-        topBar = {TopAppBar(
-            title = {Text(text = "Shopping")},
-            actions = {
-                IconButton(
-                    onClick = {navController.navigate(Screen.Cart)}
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.ShoppingCart,
-                        contentDescription = "sepet")
-                }
-            })})
-    {
-        innerPadding ->
-
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(text = "Kahve Vitrini", fontWeight = FontWeight.Bold) },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.surface,
+                    titleContentColor = MaterialTheme.colorScheme.primary
+                )
+            )
+        }
+    ) { innerPadding ->
         Column(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
                 .padding(innerPadding),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top
         ) {
-            OutlinedTextField(               //arama çubuğu
+            OutlinedTextField(
                 value = viewModel.searchText.value,
-                onValueChange = {viewModel.searchText.value = it},
-                label = {Text("Search products")}
+                onValueChange = { viewModel.searchText.value = it },
+                label = { Text("Ürünlerde Ara") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                singleLine = true,
+                shape = MaterialTheme.shapes.medium
             )
 
-
-            Row (
+            Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
-                modifier = Modifier.padding(horizontal = 16.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
             ) {
                 FilterChip(
                     selected = viewModel.sortOption.value == "none" && !viewModel.showExpensiveOnly.value,
@@ -80,45 +66,57 @@ fun ShopScreen(
                         viewModel.sortOption.value = "none"
                         viewModel.showExpensiveOnly.value = false
                     },
-                    label = {Text("All")}
+                    label = { Text("Tümü") }
                 )
-
                 FilterChip(
                     selected = viewModel.sortOption.value == "price",
                     onClick = {
                         viewModel.sortOption.value = "price"
                         viewModel.showExpensiveOnly.value = false
                     },
-                    label = {Text("Price")}
+                    label = { Text("Fiyat") }
                 )
-
                 FilterChip(
                     selected = viewModel.sortOption.value == "name",
                     onClick = {
                         viewModel.sortOption.value = "name"
                         viewModel.showExpensiveOnly.value = false
                     },
-                    label = {Text("Name")}
+                    label = { Text("İsim") }
                 )
-
                 FilterChip(
                     selected = viewModel.showExpensiveOnly.value,
                     onClick = {
                         viewModel.showExpensiveOnly.value = !viewModel.showExpensiveOnly.value
                         viewModel.sortOption.value = "none"
                     },
-                    label = {Text("Expensive")}
+                    label = { Text("Pahalı") }
                 )
             }
 
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
-                modifier = Modifier.fillMaxSize(),
-                horizontalArrangement = Arrangement.spacedBy(6.dp),
-                verticalArrangement = Arrangement.spacedBy(6.dp)
-            ) {
-                items(products) { product ->
-                    ProductCard(product = product)
+            if (isLoading) {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    CircularProgressIndicator()
+                }
+            } else if (errorMessage != null) {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    Text(text = errorMessage ?: "Bir hata oluştu", color = MaterialTheme.colorScheme.error)
+                }
+            } else {
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp)
+                ) {
+                    items(products) { product ->
+                        // Ürün sepette var mı kontrol ediyoruz
+                        val isInCart = cartItems.any { it.name == product.name }
+                        ProductCard(
+                            product = product,
+                            isInCart = isInCart,
+                            onCartClick = { viewModel.toggleCart(product) }
+                        )
+                    }
                 }
             }
         }
